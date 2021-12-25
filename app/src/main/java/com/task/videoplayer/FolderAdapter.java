@@ -2,6 +2,7 @@ package com.task.videoplayer;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.MyViewHold
 
         holder.name.setText(folderNames);
         holder.countVideos.setText(countVideos(folderName.get(position)) + " Videos");
+        holder.itemView.setOnClickListener(view -> context.startActivity(new Intent(context, VideoFolder.class).putExtra("folderName", folderName.get(position))));
     }
 
     @Override

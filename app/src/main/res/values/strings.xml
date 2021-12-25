@@ -3,4 +3,10 @@
     <string name="video_library">Video Library</string>
     <string name="folders">Folders</string>
     <string name="sort">Sort</string>
+
+    <string name="size_in_b">%1$.2f B</string>
+    <string name="size_in_kb">%1$.2f KB</string>
+    <string name="size_in_mb">%1$.2f MB</string>
+    <string name="size_in_gb">%1$.2f GB</string>
+
 </resources>
