@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Personal/Android_Project/VideoPlayer/app/src/main/res/layout/activity_main.xml" value="0.2537037037037037" />
         <entry key="..\:/Personal/Android_Project/VideoPlayer/app/src/main/res/layout/activity_splash_screen.xml" value="0.1925925925925926" />
+        <entry key="..\:/Personal/Android_Project/VideoPlayer/app/src/main/res/layout/folder_list_item.xml" value="0.2537037037037037" />
       </map>
     </option>
   </component>
