@@ -33,11 +33,11 @@ import java.util.Objects;
 
 public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyHolder> {
 
-    public ArrayList<VideoModel> videoFolder;
+    public static ArrayList<VideoModel> videoFolder;
     private final Context context;
 
     public VideosAdapter(ArrayList<VideoModel> videoFolder, Context context) {
-        this.videoFolder = videoFolder;
+        VideosAdapter.videoFolder = videoFolder;
         this.context = context;
     }
 
@@ -58,30 +58,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyHolder> 
         holder.size.setText("Size: " + videoFolder.get(position).getSize());
         holder.resolution.setText("Quality: " + videoFolder.get(position).getResolution());
         holder.moreOption.setOnClickListener(view -> {
-            /*Toast.makeText(context,"Clicked",Toast.LENGTH_SHORT).show();
-            PopupMenu popupMenu = new PopupMenu(context, view);
-            popupMenu.getMenuInflater().inflate(R.menu.more_option_video_menu, popupMenu.getMenu());
-            popupMenu.setOnMenuItemClickListener(menuItem -> {
-                switch (menuItem.getItemId()) {
-                    case R.id.share:
-                        shareFile(position);
-                        break;
-                    case R.id.rename:
-                        renameFiles(position, view);
-                        break;
-                    case R.id.delete:
-                        deleteFiles(position, view);
-                        break;
-                    case R.id.properties:
-                        showProperties(position);
-                        break;
-                }
-                return false;
-            });
-            popupMenu.show();*/
-            /*PopupMenu popupMenu = new PopupMenu(context,holder.moreOption);
-            popupMenu.inflate(R.menu.more_option_video_menu);*/
-            PopupMenu popupMenu = new PopupMenu(context,holder.moreOption);
+            PopupMenu popupMenu = new PopupMenu(context, holder.moreOption);
             popupMenu.getMenuInflater().inflate(R.menu.more_option_video_menu, popupMenu.getMenu());
             popupMenu.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
@@ -101,6 +78,9 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyHolder> 
                 return false;
             });
             popupMenu.show();
+        });
+        holder.itemView.setOnClickListener(view -> {
+            context.startActivity(new Intent(context, VideoPlayerActivity.class).putExtra("position", position));
         });
 
     }
@@ -149,25 +129,25 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyHolder> 
                 .setNegativeButton("Cancel", (dialog, which) -> {
                     // leave it as empty
                 }).setPositiveButton("Ok", (dialog, which) -> {
-                    Uri contentUri = ContentUris.withAppendedId(
-                            MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                            Long.parseLong(videoFolder.get(p).getId()));
-                    File file = new File(videoFolder.get(p).getPath());
-                    boolean deleted = file.delete();
-                    if (deleted) {
-                        context.getApplicationContext().getContentResolver()
-                                .delete(contentUri,
-                                        null, null);
-                        videoFolder.remove(p);
-                        notifyItemRemoved(p);
-                        notifyItemRangeChanged(p, videoFolder.size());
-                        Snackbar.make(view, "File Deleted Success",
-                                Snackbar.LENGTH_SHORT).show();
-                    } else {
-                        Snackbar.make(view, "File Deleted Fail",
-                                Snackbar.LENGTH_SHORT).show();
-                    }
-                }).show();
+            Uri contentUri = ContentUris.withAppendedId(
+                    MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                    Long.parseLong(videoFolder.get(p).getId()));
+            File file = new File(videoFolder.get(p).getPath());
+            boolean deleted = file.delete();
+            if (deleted) {
+                context.getApplicationContext().getContentResolver()
+                        .delete(contentUri,
+                                null, null);
+                videoFolder.remove(p);
+                notifyItemRemoved(p);
+                notifyItemRangeChanged(p, videoFolder.size());
+                Snackbar.make(view, "File Deleted Success",
+                        Snackbar.LENGTH_SHORT).show();
+            } else {
+                Snackbar.make(view, "File Deleted Fail",
+                        Snackbar.LENGTH_SHORT).show();
+            }
+        }).show();
     }
 
     @SuppressLint("NotifyDataSetChanged")

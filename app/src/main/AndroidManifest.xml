@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VideoPlayer">
         <activity
+            android:name=".VideoPlayerActivity"
+            android:exported="false" />
+        <activity
             android:name=".VideoFolder"
             android:exported="false" />
         <activity
