@@ -8,5 +8,8 @@
     <string name="size_in_kb">%1$.2f KB</string>
     <string name="size_in_mb">%1$.2f MB</string>
     <string name="size_in_gb">%1$.2f GB</string>
+    <string name="by_size">By Size</string>
+    <string name="by_name">By Name</string>
+    <string name="by_date">By Date</string>
 
 </resources>
