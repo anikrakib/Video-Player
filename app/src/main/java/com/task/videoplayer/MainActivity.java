@@ -4,10 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -18,13 +24,49 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     private final ArrayList<String> folderList = new ArrayList<>();
     public ArrayList<VideoModel> videoList;
+    public static String orderBy;
+    private static final String MY_SORT_PREF = "sortOrder";
 
+
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.folder_recyclerview);
+        ImageView sort = findViewById(R.id.sort);
+
+        SharedPreferences.Editor editor = getSharedPreferences(MY_SORT_PREF, MODE_PRIVATE).edit();
+
+        sort.setOnClickListener(view -> {
+            PopupMenu popupMenu = new PopupMenu(getApplicationContext(), sort);
+            popupMenu.getMenuInflater().inflate(R.menu.sort_by_menu, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(menuItem -> {
+                switch (menuItem.getItemId()) {
+                    case R.id.sort_by_date:
+                        editor.putString("sorting", "sortByDate");
+                        editor.apply();
+                        this.recreate();
+                        break;
+
+                    case R.id.sort_by_name:
+                        editor.putString("sorting", "sortByName");
+                        editor.apply();
+                        this.recreate();
+                        break;
+
+                    case R.id.sort_by_size:
+                        editor.putString("sorting", "sortBySize");
+                        editor.apply();
+                        this.recreate();
+                        break;
+                }
+                return false;
+            });
+            popupMenu.show();
+        });
+
         videoList = fetchAllVideos(this);
         if (folderList != null && folderList.size() > 0) {
             folderAdapter = new FolderAdapter(folderList, videoList, this);
@@ -41,7 +83,24 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<VideoModel> fetchAllVideos(MainActivity context) {
         ArrayList<VideoModel> videoModels = new ArrayList<>();
         Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-        String orderBy = MediaStore.Video.Media.DATE_ADDED + " ASC";
+        SharedPreferences preferences = getSharedPreferences(MY_SORT_PREF, MODE_PRIVATE);
+        //which one you want to set default in sorting
+        // i am setting by date
+        String sort = preferences.getString("sorting", "sortByDate");
+
+        switch (sort) {
+            case "sortByDate":
+                orderBy = MediaStore.MediaColumns.DATE_ADDED + " ASC";
+                break;
+
+            case "sortByName":
+                orderBy = MediaStore.MediaColumns.DISPLAY_NAME + " ASC";
+                break;
+
+            case "sortBySize":
+                orderBy = MediaStore.MediaColumns.SIZE + " ASC";
+                break;
+        }
         String[] projection = {
                 MediaStore.Video.Media._ID,
                 MediaStore.Video.Media.DATA,

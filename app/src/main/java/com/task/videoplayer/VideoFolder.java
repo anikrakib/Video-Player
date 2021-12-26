@@ -1,5 +1,7 @@
 package com.task.videoplayer;
 
+import static com.task.videoplayer.MainActivity.orderBy;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -89,7 +91,6 @@ public class VideoFolder extends AppCompatActivity
         ArrayList<VideoModel> list = new ArrayList<>();
 
         Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-        String orderBy = MediaStore.Video.Media.DATE_ADDED + " DESC";
         String[] projection = {
                 MediaStore.Video.Media._ID,
                 MediaStore.Video.Media.DATA,
