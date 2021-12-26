@@ -21,4 +21,9 @@
         <item name="android:textColorHint">#2E2E2E</item>
     </style>
 
+    <style name="MyRipple">
+        <item name="colorControlHighlight">@color/titleTextColor</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
 </resources>

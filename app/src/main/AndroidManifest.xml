@@ -17,7 +17,11 @@
         android:theme="@style/Theme.VideoPlayer">
         <activity
             android:name=".VideoPlayerActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize"
+            android:resizeableActivity="true"
+            android:supportsPictureInPicture="true"
+            tools:targetApi="n" />
         <activity
             android:name=".VideoFolder"
             android:exported="false" />
